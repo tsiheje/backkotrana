@@ -8,6 +8,7 @@ const createTableUser = `
     email VARCHAR(50) NOT NULL,
     phone VARCHAR(15) NOT NULL,
     roles VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )
@@ -36,6 +37,18 @@ const createTableTransport = `
   )
 `;
 
+const creatTableLivraison = `
+  	CREATE TABLE IF NOT EXISTS livraison (
+      id_livraison INT AUTO_INCREMENT PRIMARY KEY,
+      coordonnes_recuperation JSON NOT NULL,
+      coordonnes_destination JSON NOT NULL,
+      date_recuperation DATETIME NOT NULL,
+      date_livraison DATETIME NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  	)
+`;
+
 connetion.query(createTableUser, (err, results, fields) => {
     if (err) {
       console.error('Erreur lors de la création de la table user: ' + err.message);
@@ -57,5 +70,13 @@ connetion.query(createTableUser, (err, results, fields) => {
       console.error('Erreur lors de la création de la table transport: ' + err.message);
     } else {
       console.log('Table transport créée avec succès.');
+    }
+  });
+
+  connetion.query(creatTableLivraison, (err, results, fields) => {
+    if (err) {
+      console.error('Erreur lors de la création de la table livraison: ' + err.message);
+    } else {
+      console.log('Table livraison créée avec succès.');
     }
   });

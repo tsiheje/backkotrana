@@ -4,7 +4,7 @@ const Arret = {
     createArret: (arretData, callback) => {
         connection.query(
             "INSERT INTO arret (name_arret, fokotany, coordonnes) VALUES (?, ?, ?)",
-            [arretData.name_arret, arretData.fokotany, JSON.stringify(arretData.coordonnes)], // JSON.stringify pour stocker en JSON
+            [arretData.name_arret, arretData.fokotany, JSON.stringify(arretData.coordonnes)], 
             callback
         );
     },

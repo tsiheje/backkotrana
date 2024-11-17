@@ -14,7 +14,7 @@ const createUser = (req, res) => {
       return res.status(400).json({ error: "Email déjà utilisé" });
     }
 
-    bcrypt.hash(password, 10, (err, hashedPassword) => {
+    bcryptjs.hash(password, 10, (err, hashedPassword) => {
       if (err) {
         return res.status(500).json({ error: "Erreur lors du hachage du mot de passe" });
       }
@@ -33,7 +33,7 @@ const createUser = (req, res) => {
 
 const loginUser = (req, res) => {
   const { email, password } = req.body;
-
+  console.log(password)
   User.findByEmail(email, (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Erreur lors de la recherche de l'utilisateur" });
@@ -43,18 +43,18 @@ const loginUser = (req, res) => {
       return res.status(400).json({ error: "Utilisateur non trouvé" });
     }
 
-    const user = results[0];
-
-    bcrypt.compare(password, user.password, (err, isMatch) => {
+    const users = results[0];
+    console.log(users.password)
+    bcryptjs.compare(password, users.password, (err, isMatch) => {
       if (err) {
         return res.status(500).json({ error: "Erreur de comparaison du mot de passe" });
       }
-
+      console.log(isMatch)
       if (!isMatch) {
         return res.status(400).json({ error: "Mot de passe incorrect" });
       }
 
-      const token = jwt.sign({ id_user: user.id_user }, process.env.JWT_SECRET, { expiresIn: "1h" });
+      const token = jwt.sign({ id_user: users.id_user }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
       res.status(200).json({
         message: "Connexion réussie",
